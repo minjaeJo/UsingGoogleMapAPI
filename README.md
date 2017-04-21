@@ -1,5 +1,19 @@
 # UsingGoogleMapAPI
 
+## 목차
+- setting
+- GoogleMap API 다루기전 설정해줘야 할 부분
+- MapViewController 코드 설명
+  - CocoaPod으로 쓴 라이브러리
+  - 프로퍼티
+  - CLLocation & CLLocationManager
+  - viewDidLoad
+  - Part - Delegate : GMSMapViewDelegate
+- 소감
+  - googleMaps API 쓰면서 힘들거나 막혔던 점
+
+
+
 ## Setting
 1. cd UsingGoogleMapAPI
 2. pod install
@@ -79,11 +93,11 @@ override func viewDidLoad() {
 
         //googleMapsView - 지도 생성 및 표시
         let camera = GMSCameraPosition.camera(withLatitude: 37.405614, longitude: 127.106064, zoom: 15.0)
-        self.goolgleMap.camera = camera
-        self.goolgleMap.delegate = self
-        self.goolgleMap?.isMyLocationEnabled = true
-        self.goolgleMap.settings.myLocationButton = true
-        self.goolgleMap.settings.zoomGestures = true
+        self.googleMap.camera = camera
+        self.googleMap.delegate = self
+        self.googleMap?.isMyLocationEnabled = true
+        self.googleMap.settings.myLocationButton = true
+        self.googleMap.settings.zoomGestures = true
     }
 ```
 
@@ -92,9 +106,45 @@ override func viewDidLoad() {
  - `locationManager.desiredAccuracy = kCLLocationAccuracyBest` - 위치의 정확성 high-level로 설정
  - `locationManager.startMonitoringSignificantLocationChanges()` - 중요한 위치 변화를 기초로 하여 업데이트 정보를 시작
 
- - `self.goolgleMap.camera = GMSCameraPosition.camera(~~)` - 맵의 시점을 표시
- - `self.goolgleMap?.isMyLocationEnabled` - 현재 위치 사용 가능 여부
- - `self.goolgleMap.settings.myLocationButton` - 현재위치 버튼 생성
- - `self.goolgleMap.settings.zoomGestures` - 줌 제스쳐
+ - `self.googleMap.camera = GMSCameraPosition.camera(~~)` - 맵의 시점을 표시
+ - `self.googleMap?.isMyLocationEnabled` - 현재 위치 사용 가능 여부
+ - `self.googleMap.settings.myLocationButton` - 현재위치 버튼 생성
+ - `self.googleMap.settings.zoomGestures` - 줌 제스쳐
 
- 
+### Part - Delegate : GMSMapViewDelegate
+```Swift
+func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
+     googleMaps.isMyLocationEnabled = true
+ }
+
+func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+     print("coordinate = \(coordinate)")
+ }
+```
+
+ -  `func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition)` - 제스쳐가 끝나거나 애니메이션이 완료된 직후, 맵이 idle(아무것도 안하고 있는 상태)일때 이 메소드를 호출한다.
+
+- `func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D)` - 특정 좌표에 tap 제스쳐를 한 후, 이 메소드를 부른다.(단, 마커를 탭한 경우는 취급하지 않는다) => 이 메소드에서 좌표찍을때마다 정보를 전달하게 했다.
+
+### MyLocationButton
+- `func didTapMyLocationButton(for mapView: GMSMapView)` - MyLocationButton을 눌렀을때
+
+
+## 소감
+### googleMaps API 쓰면서 힘들거나 막혔던 점
+**4/17 ~ 4/18** : 이 기간은 오로지 가이드만 따라하는 시간을 가짐. 힘들었던 점은 문서에 대해 이해하고 따라하는데 시간이 많이 걸렸던 것 같음.
+
+**4/19** : 내가 원하는 방향으로 뷰를 커스텀 하는 방법에 대해 고민하는 시간을 많이 가짐. 가이드중 `let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)`를 super view위에 올려 맵을 띄우는 예제가 있음. 나는 예제와 다르게 oulet으로 연결해서 처리하고 싶었음. 하지만... 그 길을 험난했음... 여기서 많은 시간을 삽질함.
+
+=> 해결했던 방법 : view를 main.storyboard에 올리고 UIView입력하는 곳에 GMSMapView 타입으로 지정하고 아울렛 연결하여 해결
+
+**4/20** : 실행할때마다 AppDelegate에서 app crash나는 부분을 고친다고 하루를 다날렸음...
+
+=> 해결했던 방법 : app bulid setting에서 Linking - Debug에서 ObejC로 바꾸니 해결됨.. 아직도 정확한 원인을 모르겠음.
+
+**4/21** : Alamofire과 SwiftyJSON을 익혀서 직접 사용하는 학습시간이 조금 있었음.
+1. 정체되었던 부분은 `func convertToAddress(latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping (String) -> Void) `에서 api에 받아온 json을 처리하는 부분임. 애매하게.. 잘 안되던 부분이였음.
+
+2. Alamofire는 기본적으로 비동기처리 방식임. 그렇다보니 리턴값으로 넘기는게 힘들었음
+
+=> 해결했던 방법: 1. 디버깅 툴을 이용해서 받아온 값들 하나하나 뜯어가며 공책으로 품 2. 구제이 도움으로 completion : (String) -> Void 을 이용해 해결함. 기본적으로 비동기방식이라 이런 식으로 접근 해야한다고 함.
