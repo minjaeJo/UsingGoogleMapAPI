@@ -12,7 +12,7 @@ import GooglePlaces
 import Alamofire
 import SwiftyJSON
 
-class ViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate {
+class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate {
 
     @IBOutlet weak var goolgleMap: GMSMapView!
 

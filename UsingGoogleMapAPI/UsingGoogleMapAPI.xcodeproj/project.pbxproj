@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		597134C8D3A94605196647CE /* Pods_UsingGoogleMapAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF9051DAC20A8E92EB7773C1 /* Pods_UsingGoogleMapAPI.framework */; };
 		B5915CAF1EA9A29600053CF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5915CAE1EA9A29600053CF0 /* AppDelegate.swift */; };
-		B5915CB11EA9A29600053CF0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5915CB01EA9A29600053CF0 /* ViewController.swift */; };
+		B5915CB11EA9A29600053CF0 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5915CB01EA9A29600053CF0 /* MapViewController.swift */; };
 		B5915CB41EA9A29600053CF0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5915CB21EA9A29600053CF0 /* Main.storyboard */; };
 		B5915CB61EA9A29600053CF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5915CB51EA9A29600053CF0 /* Assets.xcassets */; };
 		B5915CB91EA9A29600053CF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5915CB71EA9A29600053CF0 /* LaunchScreen.storyboard */; };
@@ -19,7 +19,7 @@
 		93CE919252EF1F36F01100DE /* Pods-UsingGoogleMapAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UsingGoogleMapAPI.release.xcconfig"; path = "Pods/Target Support Files/Pods-UsingGoogleMapAPI/Pods-UsingGoogleMapAPI.release.xcconfig"; sourceTree = "<group>"; };
 		B5915CAB1EA9A29600053CF0 /* UsingGoogleMapAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UsingGoogleMapAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5915CAE1EA9A29600053CF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B5915CB01EA9A29600053CF0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B5915CB01EA9A29600053CF0 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		B5915CB31EA9A29600053CF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B5915CB51EA9A29600053CF0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5915CB81EA9A29600053CF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				B5915CAE1EA9A29600053CF0 /* AppDelegate.swift */,
-				B5915CB01EA9A29600053CF0 /* ViewController.swift */,
+				B5915CB01EA9A29600053CF0 /* MapViewController.swift */,
 				B5915CB21EA9A29600053CF0 /* Main.storyboard */,
 				B5915CB51EA9A29600053CF0 /* Assets.xcassets */,
 				B5915CB71EA9A29600053CF0 /* LaunchScreen.storyboard */,
@@ -212,7 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B5915CB11EA9A29600053CF0 /* ViewController.swift in Sources */,
+				B5915CB11EA9A29600053CF0 /* MapViewController.swift in Sources */,
 				B5915CAF1EA9A29600053CF0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,6 +379,7 @@
 				B5915CBF1EA9A29600053CF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
