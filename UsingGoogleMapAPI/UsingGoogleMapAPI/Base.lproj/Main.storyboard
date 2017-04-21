@@ -21,34 +21,53 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CEH-ez-U4C" customClass="GMSMapView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEH-ez-U4C" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="64" width="375" height="468"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-YP-G84" customClass="StatusView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-YP-G84" customClass="StatusView">
                                 <rect key="frame" x="0.0" y="540" width="375" height="127"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kv6-6e-TAJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="CEH-ez-U4C" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="DUt-Eu-AR9"/>
+                            <constraint firstAttribute="trailing" secondItem="vvx-YP-G84" secondAttribute="trailing" id="I4h-a0-r9W"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" constant="8" id="JNq-iJ-uU1"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="K35-38-bme"/>
+                            <constraint firstAttribute="trailing" secondItem="CEH-ez-U4C" secondAttribute="trailing" id="MqG-Gt-LF7"/>
+                            <constraint firstItem="CEH-ez-U4C" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Swg-hP-gwT"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" constant="8" id="njt-fT-hr4"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="bottom" id="uJ3-KR-t58"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="540" id="wzx-MM-yMJ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="2cq-E2-cnR"/>
                     <connections>
-                        <outlet property="goolgleMap" destination="CEH-ez-U4C" id="qWf-Zg-c1C"/>
+                        <outlet property="googleMap" destination="CEH-ez-U4C" id="fhW-Ic-BIJ"/>
+                        <outlet property="locationLabel" destination="Kv6-6e-TAJ" id="dPn-jU-emp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1076" y="138.98050974512745"/>
+            <point key="canvasLocation" x="1074.4000000000001" y="138.0809595202399"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="exe-yV-Ch7">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hSq-QH-BO2" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jU7-Od-RRI">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="jU7-Od-RRI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
