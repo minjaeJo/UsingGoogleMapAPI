@@ -36,6 +36,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         self.goolgleMap.settings.myLocationButton = true
         self.goolgleMap.settings.zoomGestures = true
     }
+    
+    // Part - Method : 맵에 마커 생성하는 기능
+    func createMarker(titleMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2DMake(latitude, longitude)
+        marker.title = titleMarker
+        marker.icon = iconMarker
+        marker.map = googleMaps
+    }
+    
 
 
 }
