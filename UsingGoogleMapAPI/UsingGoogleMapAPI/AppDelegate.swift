@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var googleAPIKey = "AIzaSyDDb78kqx1F03V1yE9at-r2QWfDRZK9BGM"
+    var googleAPIKey = "AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

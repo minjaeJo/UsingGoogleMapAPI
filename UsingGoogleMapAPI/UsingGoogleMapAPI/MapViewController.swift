@@ -15,22 +15,24 @@ import SwiftyJSON
 class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerDelegate {
 
     @IBOutlet weak var googleMap: GMSMapView!
-
     @IBOutlet weak var locationLabel: UILabel!
     
-    // CLLocation은 좌표(위도, 경도)를 알려주는 데이터 오브젝트
     var locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+    var placesClient: GMSPlacesClient!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //locationManager - 좌표 알려주는 매니져
+        locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingHeading()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startMonitoringSignificantLocationChanges()
         
-        //googleMapsView - 지도 생성 및 표시
-        let camera = GMSCameraPosition.camera(withLatitude: 37.405614, longitude: 127.106064, zoom: 15.0)
+        //googleMapsView - 지도 생성 및 표시127.106053
+        let camera = GMSCameraPosition.camera(withLatitude: 37.404796, longitude: 127.106053, zoom: 15.0)
         self.googleMap.camera = camera
         self.googleMap.delegate = self
         self.googleMap?.isMyLocationEnabled = true
@@ -46,6 +48,15 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         marker.icon = iconMarker
         marker.map = googleMap
     }
+    
+    // Part - Delegate : Location Manager Delegate
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error to get lotation \(error)")
+    }
+    
+    
+    
+// Part - Delegate : GMSMapViewDelegate
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         googleMap.isMyLocationEnabled = true
     }
@@ -53,10 +64,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         convertToAddress(latitude: coordinate.latitude, longtitude: coordinate.longitude) { (address) in
             self.locationLabel.text = address
+            print(address)
         }
-//        print("coordinate = \(coordinate)")
-//        locationLabel.text = "\()"
-        //"위도:\(coordinate.latitude), 경도:\(coordinate.longitude)"
+        around()
     }
     
 //    func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
@@ -64,7 +74,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
 //    }
     func convertToAddress(latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping (String) -> Void) {
         let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=\(latitude),\(longtitude)"
-//        var address = ""
         
         Alamofire.request(url).responseJSON{ responds in
             print(responds.request as Any)
@@ -77,7 +86,28 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             let premiseTypeAddress = result[0].dictionary
             let formattedAddress = (premiseTypeAddress?["formatted_address"]?.stringValue)!
             completion(formattedAddress)
-//            address = formattedAddress
+        }
+    }
+    func around () {
+        let url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=37.404796,127.106053&radius=3000&type=cafe&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
+        Alamofire.request(url).responseJSON { responds in
+            print(responds.request as Any)
+            print(responds.response as Any)
+            print(responds.data as Any)
+            print(responds.result as Any)
+            let json = JSON(data: responds.data!)
+            let results = json["results"].arrayValue
+            for result in results {
+                let geometry = result["geometry"].dictionaryValue
+                let location = geometry["location"]?.dictionary
+                let locationLatitude = location?["lat"]?.doubleValue
+                let locationLongtitude = location?["lng"]?.doubleValue
+                //let place_id = result[""]
+//
+                self.createMarker(titleMarker: "카페", iconMarker: #imageLiteral(resourceName: "startPin") , latitude: locationLatitude!, longitude: locationLongtitude!)
+//                
+            }
+            
         }
     }
 }
