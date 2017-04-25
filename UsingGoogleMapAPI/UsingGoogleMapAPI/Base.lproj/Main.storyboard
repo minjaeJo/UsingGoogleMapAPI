@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,39 +24,73 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CEH-ez-U4C" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="64" width="375" height="468"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-YP-G84" customClass="StatusView">
-                                <rect key="frame" x="0.0" y="540" width="375" height="127"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vvx-YP-G84">
+                                <rect key="frame" x="0.0" y="532" width="375" height="135"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kv6-6e-TAJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="카페주소" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kv6-6e-TAJ">
+                                        <rect key="frame" x="154" y="71.5" width="213" height="13.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cTH-yG-yxi">
+                                        <rect key="frame" x="8" y="10" width="115" height="115"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="115" id="vHs-xH-5kn"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="카페이름" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKc-HQ-SOh">
+                                        <rect key="frame" x="154" y="8" width="213" height="52.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="#태그 #태그 #태그" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QOR-mY-mTg">
+                                        <rect key="frame" x="154" y="84" width="213" height="43"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="leading" secondItem="cTH-yG-yxi" secondAttribute="trailing" constant="31" id="Fun-gy-UiA"/>
+                                    <constraint firstAttribute="bottom" secondItem="QOR-mY-mTg" secondAttribute="bottom" constant="8" id="IcW-R0-edQ"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="trailing" secondItem="QOR-mY-mTg" secondAttribute="trailing" id="LOF-jE-Q5S"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="leading" secondItem="Kv6-6e-TAJ" secondAttribute="leading" id="NC5-ny-sXO"/>
+                                    <constraint firstAttribute="bottom" secondItem="Kv6-6e-TAJ" secondAttribute="bottom" constant="50" id="Rae-fT-4oN"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="trailing" secondItem="Kv6-6e-TAJ" secondAttribute="trailing" id="blh-ZR-a0g"/>
+                                    <constraint firstAttribute="bottom" secondItem="cTH-yG-yxi" secondAttribute="bottom" constant="10" id="doZ-oh-YLl"/>
+                                    <constraint firstItem="cTH-yG-yxi" firstAttribute="leading" secondItem="vvx-YP-G84" secondAttribute="leading" constant="8" id="hFX-p1-BBn"/>
+                                    <constraint firstItem="cTH-yG-yxi" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="top" constant="10" id="k5Y-od-aDu"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="top" constant="8" id="mz0-Kz-nAc"/>
+                                    <constraint firstItem="Kv6-6e-TAJ" firstAttribute="top" secondItem="XKc-HQ-SOh" secondAttribute="bottom" constant="11" id="qoZ-fm-3kB"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="leading" secondItem="QOR-mY-mTg" secondAttribute="leading" id="rgr-x2-87J"/>
+                                    <constraint firstItem="XKc-HQ-SOh" firstAttribute="trailing" secondItem="vvx-YP-G84" secondAttribute="trailingMargin" id="znX-Em-PZl"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="CEH-ez-U4C" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="DUt-Eu-AR9"/>
-                            <constraint firstAttribute="trailing" secondItem="vvx-YP-G84" secondAttribute="trailing" id="I4h-a0-r9W"/>
-                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" constant="8" id="JNq-iJ-uU1"/>
-                            <constraint firstItem="vvx-YP-G84" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="K35-38-bme"/>
-                            <constraint firstAttribute="trailing" secondItem="CEH-ez-U4C" secondAttribute="trailing" id="MqG-Gt-LF7"/>
-                            <constraint firstItem="CEH-ez-U4C" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Swg-hP-gwT"/>
-                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" constant="8" id="njt-fT-hr4"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="bottom" id="uJ3-KR-t58"/>
-                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="540" id="wzx-MM-yMJ"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="0gv-2S-DRf"/>
+                            <constraint firstAttribute="trailing" secondItem="CEH-ez-U4C" secondAttribute="trailing" id="Fsb-Fk-Ity"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" id="KQF-lx-iNB"/>
+                            <constraint firstItem="CEH-ez-U4C" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="b3o-Wa-yfR"/>
+                            <constraint firstItem="CEH-ez-U4C" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="d3f-Pk-1Ay"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="532" id="eO1-Bt-bKb"/>
+                            <constraint firstAttribute="trailing" secondItem="vvx-YP-G84" secondAttribute="trailing" id="iNn-5M-YAm"/>
+                            <constraint firstItem="vvx-YP-G84" firstAttribute="top" secondItem="CEH-ez-U4C" secondAttribute="bottom" id="oo2-JR-fPe"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="bottom" id="sY7-qA-wHc"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="2cq-E2-cnR"/>
                     <connections>
+                        <outlet property="cafeAddress" destination="Kv6-6e-TAJ" id="9a1-Y2-9KY"/>
+                        <outlet property="cafeName" destination="XKc-HQ-SOh" id="elg-ch-n7E"/>
+                        <outlet property="cafePicture" destination="cTH-yG-yxi" id="L7x-8S-dXX"/>
                         <outlet property="googleMap" destination="CEH-ez-U4C" id="fhW-Ic-BIJ"/>
-                        <outlet property="locationLabel" destination="Kv6-6e-TAJ" id="dPn-jU-emp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
