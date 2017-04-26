@@ -109,7 +109,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                 let address = result?["formatted_address"]?.stringValue
                 let name = result?["name"]?.stringValue
                 
-                self.createMarker(titleMarker: name!, snippetMarker: address!, iconMarker: #imageLiteral(resourceName: "startPin") , latitude: cafeInfo["cafeLatitude"]! as! CLLocationDegrees, longitude: cafeInfo["cafeLongtitude"]! as! CLLocationDegrees)
+                self.createMarker(titleMarker: name!, snippetMarker: address!, iconMarker: #imageLiteral(resourceName: "marker") , latitude: cafeInfo["cafeLatitude"]! as! CLLocationDegrees, longitude: cafeInfo["cafeLongtitude"]! as! CLLocationDegrees)
             }
             
         }

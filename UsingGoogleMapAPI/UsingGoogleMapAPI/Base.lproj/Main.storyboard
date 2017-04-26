@@ -35,7 +35,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cTH-yG-yxi">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="a-cup-of-coffee" translatesAutoresizingMaskIntoConstraints="NO" id="cTH-yG-yxi">
                                         <rect key="frame" x="8" y="10" width="115" height="115"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="115" id="vHs-xH-5kn"/>
@@ -116,4 +116,7 @@
             <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="a-cup-of-coffee" width="700" height="466"/>
+    </resources>
 </document>
