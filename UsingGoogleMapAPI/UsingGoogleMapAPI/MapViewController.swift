@@ -43,12 +43,14 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     }
     
     // Part - Method : 맵에 마커 생성하는 기능
-    func createMarker(titleMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
+    func createMarker(titleMarker : String, snippetMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2DMake(latitude, longitude)
         marker.title = titleMarker
+        marker.snippet = snippetMarker
         marker.icon = iconMarker
         marker.map = googleMap
+        
     }
 
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
@@ -58,16 +60,16 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         googleMap.clear()
 
-//        searchCafeAroundMe(latitude: coordinate.latitude, longtitude: coordinate.longitude) { (cafeInfoArray) in
-//                spreadMarker(cafeInfo: cafeInfoArray)
-//        }
+        searchCafeAroundMe(latitude: coordinate.latitude, longtitude: coordinate.longitude) { (cafeInfoArray) in
+            self.spreadMarker(cafeInfoArray: cafeInfoArray)
+        }
     }
+    
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        print("yo~")
+        cafeName.text = marker.title
+        cafeAddress.text = marker.snippet
         return true
     }
-
-
     // 내 주위 700미터 안의 카페 탐색
     func searchCafeAroundMe (latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping ([[String : Any]]) -> Void) {
         
@@ -92,29 +94,27 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                 cafeInfo["cafeInfoID"] = cafeInfoID
                 cafeInfoArray.append(cafeInfo)
             }
+            completion(cafeInfoArray)
         }
-        completion(cafeInfoArray)
-    }
-    
-    func spreadMarker (cafeInfo : [[String : Any]]) {
         
-        for  in cafeInfo {
+    }
+    // 마커 뿌리기
+    func spreadMarker (cafeInfoArray : [[String : Any]]) {
+        for cafeInfo in cafeInfoArray {
+            let cafeURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(String(describing: cafeInfo["cafeInfoID"]!))&language=ko&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
+            
+            Alamofire.request(cafeURL).responseJSON { responds in
+                let json = JSON(data: responds.data!)
+                let result = json["result"].dictionary
+                let address = result?["formatted_address"]?.stringValue
+                let name = result?["name"]?.stringValue
+                
+                self.createMarker(titleMarker: name!, snippetMarker: address!, iconMarker: #imageLiteral(resourceName: "startPin") , latitude: cafeInfo["cafeLatitude"]! as! CLLocationDegrees, longitude: cafeInfo["cafeLongtitude"]! as! CLLocationDegrees)
+            }
             
         }
+        print("cafeInfoArray:", cafeInfoArray.count)
     }
-    //self.createMarker(titleMarker: "카페", iconMarker: #imageLiteral(resourceName: "startPin") , latitude: cafeLatitude!, longitude: cafeLongtitude!)
-    //            let cafeURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJoxjnPvSnfDURgtAkn8HmE_8&language=ko&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
-    //
-    //            Alamofire.request(cafeURL).responseJSON { responds in
-    //                let json = JSON(data: responds.data!)
-    //                let result = json["result"].dictionary
-    //                let address = result?["formatted_address"]?.stringValue
-    //                let name = result?["name"]?.stringValue
-    //
-    //                self.cafeAddress.text = address
-    //                self.cafeName.text = name
-    //
-    //            }
 }
 
 
