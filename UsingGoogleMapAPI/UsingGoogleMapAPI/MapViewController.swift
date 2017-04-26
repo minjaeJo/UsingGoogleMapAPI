@@ -33,7 +33,6 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startMonitoringSignificantLocationChanges()
         
-        //googleMapsView - 지도 생성 및 표시127.106053
         let camera = GMSCameraPosition.camera(withLatitude: 37.404796, longitude: 127.106053, zoom: 15.0)
         self.googleMap.camera = camera
         self.googleMap.delegate = self
@@ -42,17 +41,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         self.googleMap.settings.zoomGestures = true
     }
     
-    // Part - Method : 맵에 마커 생성하는 기능
-    func createMarker(titleMarker : String, snippetMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2DMake(latitude, longitude)
-        marker.title = titleMarker
-        marker.snippet = snippetMarker
-        marker.icon = iconMarker
-        marker.map = googleMap
-        
-    }
 
+    // Part - Delegate : GMSMapViewDelegate
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
         googleMap.isMyLocationEnabled = true
     }
@@ -70,7 +60,17 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         cafeAddress.text = marker.snippet
         return true
     }
-    // 내 주위 700미터 안의 카페 탐색
+    
+    // Part - Method : 맵에 마커 생성하는 기능
+    func createMarker(titleMarker : String, snippetMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2DMake(latitude, longitude)
+        marker.title = titleMarker
+        marker.snippet = snippetMarker
+        marker.icon = iconMarker
+        marker.map = googleMap
+    }
+    // Part - Method : 내 주위 700미터 안의 카페 탐색
     func searchCafeAroundMe (latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping ([[String : Any]]) -> Void) {
         
         var cafeInfo = [String : Any]()
@@ -96,9 +96,8 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             }
             completion(cafeInfoArray)
         }
-        
     }
-    // 마커 뿌리기
+    // Part - Method : 마커 뿌리기
     func spreadMarker (cafeInfoArray : [[String : Any]]) {
         for cafeInfo in cafeInfoArray {
             let cafeURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(String(describing: cafeInfo["cafeInfoID"]!))&language=ko&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
@@ -111,9 +110,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
                 
                 self.createMarker(titleMarker: name!, snippetMarker: address!, iconMarker: #imageLiteral(resourceName: "marker") , latitude: cafeInfo["cafeLatitude"]! as! CLLocationDegrees, longitude: cafeInfo["cafeLongtitude"]! as! CLLocationDegrees)
             }
-            
         }
-        print("cafeInfoArray:", cafeInfoArray.count)
     }
 }
 

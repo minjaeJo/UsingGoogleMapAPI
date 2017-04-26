@@ -5,10 +5,13 @@
 - GoogleMap API 다루기전 설정해줘야 할 부분
 - MapViewController 코드 설명
   - CocoaPod으로 쓴 라이브러리
-  - 프로퍼티
+  - 전역 프로퍼티
   - CLLocation & CLLocationManager
   - viewDidLoad
   - Part - Delegate : GMSMapViewDelegate
+  - Part - Method : 맵에 마커 생성하는 기능
+  - Part - Method : 내 주위 700미터 안의 카페 탐색
+  - Part - Method : 마커 뿌리기
 - 소감
   - googleMaps API 쓰면서 힘들거나 막혔던 점
 
@@ -114,21 +117,103 @@ override func viewDidLoad() {
 ### Part - Delegate : GMSMapViewDelegate
 ```Swift
 func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-     googleMaps.isMyLocationEnabled = true
- }
+    googleMap.isMyLocationEnabled = true
+}
 
 func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-     print("coordinate = \(coordinate)")
- }
+    googleMap.clear()
+
+    searchCafeAroundMe(latitude: coordinate.latitude, longtitude: coordinate.longitude) { (cafeInfoArray) in
+        self.spreadMarker(cafeInfoArray: cafeInfoArray)
+    }
+}
+
+func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+    cafeName.text = marker.title
+    cafeAddress.text = marker.snippet
+    return true
+}
 ```
 
  -  `func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition)` - 제스쳐가 끝나거나 애니메이션이 완료된 직후, 맵이 idle(아무것도 안하고 있는 상태)일때 이 메소드를 호출한다.
 
-- `func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D)` - 특정 좌표에 tap 제스쳐를 한 후, 이 메소드를 부른다.(단, 마커를 탭한 경우는 취급하지 않는다) => 이 메소드에서 좌표찍을때마다 정보를 전달하게 했다.
+- `func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D)` - 특정 좌표에 클릭할때마다 이 메소드를 부른다.(단, 마커를 클릭한 경우는 취급하지 않는다) => 이 메소드에서 좌표찍을때마다 그 좌표를 중심으로 700미터 반경안의 카페를 탐색하는 searchCafeAroundMe 메소드를 비동기 호출한다.
 
-### MyLocationButton
-- `func didTapMyLocationButton(for mapView: GMSMapView)` - MyLocationButton을 눌렀을때
+- `func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool` - 마커를 클릭할때마다 카페이름과 카페주소에 값들을 넘겨준다.
 
+### Part - Method : 맵에 마커 생성하는 기능
+
+```Swift
+
+func createMarker(titleMarker : String, snippetMarker : String, iconMarker: UIImage, latitude : CLLocationDegrees, longitude : CLLocationDegrees) {
+    let marker = GMSMarker()
+    marker.position = CLLocationCoordinate2DMake(latitude, longitude)
+    marker.title = titleMarker
+    marker.snippet = snippetMarker
+    marker.icon = iconMarker
+    marker.map = googleMap
+}
+
+```
+
+-  기본적으로 GMSMarker는 추상클래스인 GMSOverLayout을 상속받아 만들어진 마커의 클래스이다. 위 메소드는 정해진 파라미터(마커이름, 마커상세정보, 아이콘, 위도, 경도)를 가지고 마커를 만드는 역할을 담당하는 메소드이다.
+
+### Part - Method : 내 주위 700미터 안의 카페 탐색
+```Swift
+
+func searchCafeAroundMe (latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping ([[String : Any]]) -> Void) {
+
+    var cafeInfo = [String : Any]()
+    var cafeInfoArray = [[String : Any]]()
+
+    let aroundMeURL = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=\(latitude),\(longtitude)&radius=700&type=cafe&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
+
+    Alamofire.request(aroundMeURL).responseJSON { responds in
+        let json = JSON(data: responds.data!)
+        let results = json["results"].arrayValue
+
+        for result in results {
+            let geometry = result["geometry"].dictionaryValue
+            let location = geometry["location"]?.dictionary
+            let cafeLatitude = location?["lat"]?.doubleValue
+            let cafeLongtitude = location?["lng"]?.doubleValue
+            let cafeInfoID = result["place_id"].stringValue
+
+            cafeInfo["cafeLatitude"] = cafeLatitude
+            cafeInfo["cafeLongtitude"] = cafeLongtitude
+            cafeInfo["cafeInfoID"] = cafeInfoID
+            cafeInfoArray.append(cafeInfo)
+        }
+        completion(cafeInfoArray)
+    }
+}
+
+```
+
+- searchCafeAroundMe함수는 내 주변 700미터 반경의 카페를 GooglePlaces API로 장소검색한 결과들을 cafeInfoArray에 담는 역할을 하는 메소드이다.
+
+
+### Part - Method : 마커 뿌리기
+```Swift
+
+func spreadMarker (cafeInfoArray : [[String : Any]]) {
+    for cafeInfo in cafeInfoArray {
+        let cafeURL = "https://maps.googleapis.com/maps/api/place/details/json?placeid=\(String(describing: cafeInfo["cafeInfoID"]!))&language=ko&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
+
+        Alamofire.request(cafeURL).responseJSON { responds in
+            let json = JSON(data: responds.data!)
+            let result = json["result"].dictionary
+            let address = result?["formatted_address"]?.stringValue
+            let name = result?["name"]?.stringValue
+
+            self.createMarker(titleMarker: name!, snippetMarker: address!, iconMarker: #imageLiteral(resourceName: "marker") , latitude: cafeInfo["cafeLatitude"]! as! CLLocationDegrees, longitude: cafeInfo["cafeLongtitude"]! as! CLLocationDegrees)
+        }
+    }
+}
+
+```
+
+- spreadMarker함수는 파라미터에 들어온 아규먼트의 배열을 루프를 돌린다. 그리고 각각의 카페정보를 createMarker의 파라미터들에게 아규먼트를 넘겨줘서 마커를 만들어 화면에 뿌려주는 역할을 담당하는 메소드이다.
 
 ## 소감
 ### googleMaps API 쓰면서 힘들거나 막혔던 점
