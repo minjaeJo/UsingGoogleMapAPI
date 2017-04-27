@@ -85,7 +85,13 @@
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="vvx-YP-G84" secondAttribute="bottom" id="sY7-qA-wHc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="2cq-E2-cnR"/>
+                    <navigationItem key="navigationItem" id="2ya-98-d4x">
+                        <barButtonItem key="rightBarButtonItem" title="길찾기" id="jdS-3g-SKb">
+                            <connections>
+                                <action selector="findRoadButton:" destination="BYZ-38-t0r" id="Z7z-mv-Bhl"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="cafeAddress" destination="Kv6-6e-TAJ" id="9a1-Y2-9KY"/>
                         <outlet property="cafeName" destination="XKc-HQ-SOh" id="elg-ch-n7E"/>

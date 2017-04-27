@@ -20,9 +20,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     @IBOutlet weak var cafePicture: UIImageView!
     
     var locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
     var placesClient: GMSPlacesClient!
-
+    var currentLocation = [String: Double]()
+    var markerLocationInfo : CLLocationCoordinate2D! // 지우기
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //locationManager - 좌표 알려주는 매니져
@@ -33,7 +34,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.startMonitoringSignificantLocationChanges()
         
-        let camera = GMSCameraPosition.camera(withLatitude: 37.404796, longitude: 127.106053, zoom: 15.0)
+        //18.472548,-69.940499
+        //37.404796,127.106053
+        let camera = GMSCameraPosition.camera(withLatitude: 18.472548, longitude: -69.940499, zoom: 15.0)
         self.googleMap.camera = camera
         self.googleMap.delegate = self
         self.googleMap?.isMyLocationEnabled = true
@@ -49,7 +52,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         googleMap.clear()
-
+        currentLocation["latitude"] = coordinate.latitude
+        currentLocation["longtitude"] = coordinate.longitude
+        
+        
         searchCafeAroundMe(latitude: coordinate.latitude, longtitude: coordinate.longitude) { (cafeInfoArray) in
             self.spreadMarker(cafeInfoArray: cafeInfoArray)
         }
@@ -58,6 +64,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         cafeName.text = marker.title
         cafeAddress.text = marker.snippet
+        markerLocationInfo = marker.position
         return true
     }
     
@@ -70,6 +77,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
         marker.icon = iconMarker
         marker.map = googleMap
     }
+    
     // Part - Method : 내 주위 700미터 안의 카페 탐색
     func searchCafeAroundMe (latitude : CLLocationDegrees, longtitude: CLLocationDegrees, completion : @escaping ([[String : Any]]) -> Void) {
         
@@ -112,4 +120,36 @@ class MapViewController: UIViewController, GMSMapViewDelegate,CLLocationManagerD
             }
         }
     }
+    
+    func findRoad (markerLatitude : CLLocationDegrees, markerLongtitude: CLLocationDegrees) {
+        let origin = "\(String(describing: currentLocation["latitude"]!)),\(String(describing: currentLocation["longtitude"]!))"
+        let destination = "\(markerLatitude),\(markerLongtitude)"
+        
+
+        let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&key=AIzaSyD2McX3Ev3I5C-ZT-l8EsbVO9YMFcsjfcQ"
+        
+        Alamofire.request(url).responseJSON{ responds in
+            let json = JSON(data: responds.data!)
+            print(json)
+            let routes = json["routes"].arrayValue
+            
+            // 출발점과 도착점을 polyline으로 연결하기
+            for route in routes {
+                let routeOverViewPolyine = route["overview_polyline"].dictionary
+                let points = routeOverViewPolyine?["points"]?.stringValue
+                let path = GMSPath.init(fromEncodedPath: points!)
+                let polyline = GMSPolyline.init(path: path)
+                polyline.strokeColor = UIColor.blue
+                polyline.strokeWidth = 4
+                polyline.map = self.googleMap
+            }
+        }
+
+    }
+    
+    @IBAction func findRoadButton(_ sender: Any) {
+        findRoad(markerLatitude: markerLocationInfo.latitude, markerLongtitude: markerLocationInfo.longitude)
+    }
+    
+    
 }
